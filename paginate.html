@@ -7,7 +7,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
-	// 
+	
+    /* pagination starts */
     var _pagination = '<div class="pagination">';
     //display 5 results per page
     var perPage = 5;
@@ -28,7 +29,8 @@ $(document).ready(function(){
         to = from + perPage;
         $(".table > tbody > tr").hide().slice(from, to).show();
     });
-    
+    /* pagination ends */
+	
     //search for string and filter Results
     $("#myInput").on("keyup", function() {
     	if(  $(this).val() == '' )
