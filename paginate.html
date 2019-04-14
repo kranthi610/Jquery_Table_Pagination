@@ -9,7 +9,9 @@
 $(document).ready(function(){
 	// 
     var _pagination = '<div class="pagination">';
-    var _length = ($('.table tbody tr').length)/5 ;
+    //display 5 results per page
+    var perPage = 5;
+    var _length = ($('.table tbody tr').length)/perPage ;
     for( i = 0; i < _length; i++ )
     {
     	_pagination+='<a class="table_pagination" id="page_'+i+'" href="#">'+ (i+1) +'</a>';
@@ -17,41 +19,40 @@ $(document).ready(function(){
     _pagination+='</div>';
 	$( _pagination ).insertBefore(".table");
     
-    $(".table > tbody > tr").hide().slice(0, 5).show();
+    //Initially load 5 results per page
+    $(".table > tbody > tr").hide().slice(0, perPage).show();
     
     $('.table_pagination').click(function(){
     	var tabId = $(this).attr('id').split('_');
-        from = (tabId[1]) * 5;
-        to = from + 5;
+        from = (tabId[1]) * perPage;
+        to = from + perPage;
         $(".table > tbody > tr").hide().slice(from, to).show();
     });
+    
+    //search for string and filter Results
     $("#myInput").on("keyup", function() {
     	if(  $(this).val() == '' )
         {
-          $(".table > tbody > tr").hide().slice(0, 5).show();
+          $('.noResults').remove();
+          $(".table > tbody > tr").hide().slice(0, perPage).show();
         }else{
-        var value = $(this).val().toLowerCase();
-      	$(".table tbody tr").filter(function() {
-          var Count = $(".table tbody tr:visible").length;
-          if ( Count !== 0 )
-          {
-			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-          }else{
-              
-        	  $( '<span>No Results</span>').insertAfter(".table");
-          }
-         
-      });
+        	var value = $(this).val().toLowerCase();
+            $(".table tbody tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+              var Count = $(".table tbody tr:visible").length;
+              if ( Count == 0 )
+              {
+                $('.noResults').remove();
+                $( '<span class="noResults">No Results</span>').insertAfter(".table");
 
+              }else{
+                $('.noResults').remove();
+              }
 
-    }
-    
-    
-    
-    
-    
+          });
+      } 
+     
     });
-    
     
     
 });
